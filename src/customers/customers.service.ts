@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class CustomersService {
-  getCustomers(): string[] {
+  async getCustomers(): Promise<string[]> {
     return ['customer 1', 'customer 2']
   }
 }

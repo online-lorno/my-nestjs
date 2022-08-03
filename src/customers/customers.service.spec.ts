@@ -17,8 +17,8 @@ describe('CustomerService', () => {
   })
 
   describe('getCustomers', () => {
-    it('should return an array of customers', () => {
-      expect(service.getCustomers()).toBeTruthy()
+    it('should return an array of customers', async () => {
+      expect(await service.getCustomers()).toBeTruthy()
     })
   })
 })

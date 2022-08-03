@@ -6,7 +6,7 @@ export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
   @Get()
-  getCustomers(): string[] {
-    return this.customersService.getCustomers()
+  async getCustomers(): Promise<string[]> {
+    return await this.customersService.getCustomers()
   }
 }

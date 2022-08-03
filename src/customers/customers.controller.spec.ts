@@ -19,8 +19,8 @@ describe('CustomersController', () => {
   })
 
   describe('GET /customers', () => {
-    it('should return an array of customers', () => {
-      expect(controller.getCustomers()).toBeTruthy()
+    it('should return an array of customers', async () => {
+      expect(await controller.getCustomers()).toBeTruthy()
     })
   })
 })
