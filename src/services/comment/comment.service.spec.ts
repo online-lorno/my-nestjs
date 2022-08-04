@@ -8,14 +8,22 @@ import { generatePost } from '../post/post.service.spec'
 import { generateUser } from '../user/user.service.spec'
 import { PrismaModule } from '../../modules/prisma.module'
 
-export const generateComment = (): Comment => {
-  const user: User = generateUser()
-  const post: Post = generatePost()
+export interface GenerateCommentProps {
+  user?: User
+  post?: Post
+}
+
+export const generateComment = ({
+  user,
+  post,
+}: GenerateCommentProps): Comment => {
+  const newUser: User = generateUser()
+  const newPost: Post = generatePost({ user: user ?? newUser })
   const comment: Comment = {
     id: faker.datatype.number(),
     content: faker.lorem.paragraphs(),
-    postId: post.id,
-    authorId: user.id,
+    postId: post ? post.id : newPost.id,
+    authorId: user ? user.id : newUser.id,
   }
 
   return comment
@@ -39,7 +47,7 @@ describe('CommentService', () => {
   })
 
   describe('findOne', () => {
-    const comment: Comment = generateComment()
+    const comment: Comment = generateComment({})
     it('should return a single Comment using id', async () => {
       jest.spyOn(service, 'findOne').mockImplementation(async ({}) => comment)
 
@@ -61,7 +69,7 @@ describe('CommentService', () => {
   })
 
   describe('find', () => {
-    const comments: Comment[] = times(generateComment, 5)
+    const comments: Comment[] = times(() => generateComment({}), 5)
     it('should return an array of Comments', async () => {
       jest.spyOn(service, 'find').mockImplementation(async ({}) => comments)
 
@@ -70,7 +78,7 @@ describe('CommentService', () => {
   })
 
   describe('create', () => {
-    const comment: Comment = generateComment()
+    const comment: Comment = generateComment({})
     it('should create and return a single Comment', async () => {
       jest.spyOn(service, 'create').mockImplementation(async ({}) => comment)
 
@@ -93,7 +101,7 @@ describe('CommentService', () => {
   })
 
   describe('update', () => {
-    const comment: Comment = generateComment()
+    const comment: Comment = generateComment({})
     const updatedComment: Comment = {
       ...comment,
       content: faker.lorem.paragraphs(),
@@ -136,7 +144,7 @@ describe('CommentService', () => {
   })
 
   describe('delete', () => {
-    const comment: Comment = generateComment()
+    const comment: Comment = generateComment({})
     it('should create and return a single Comment', async () => {
       jest.spyOn(service, 'create').mockImplementation(async ({}) => comment)
 

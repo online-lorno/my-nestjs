@@ -7,13 +7,17 @@ import { PostService } from './post.service'
 import { generateUser } from '../user/user.service.spec'
 import { PrismaModule } from '../../modules/prisma.module'
 
-export const generatePost = (): Post => {
-  const user: User = generateUser()
+export interface GeneratePostProps {
+  user?: User
+}
+
+export const generatePost = ({ user }: GeneratePostProps): Post => {
+  const newUser: User = generateUser()
   const post: Post = {
     id: faker.datatype.number(),
     title: faker.lorem.sentence(),
     content: faker.lorem.paragraphs(),
-    authorId: user.id,
+    authorId: user ? user.id : newUser.id,
     published: true,
   }
 
@@ -38,7 +42,7 @@ describe('PostService', () => {
   })
 
   describe('findOne', () => {
-    const post: Post = generatePost()
+    const post: Post = generatePost({})
     it('should return a single Post using id', async () => {
       jest.spyOn(service, 'findOne').mockImplementation(async ({}) => post)
 
@@ -60,7 +64,7 @@ describe('PostService', () => {
   })
 
   describe('find', () => {
-    const posts: Post[] = times(generatePost, 5)
+    const posts: Post[] = times(() => generatePost({}), 5)
     it('should return an array of Posts', async () => {
       jest.spyOn(service, 'find').mockImplementation(async ({}) => posts)
 
@@ -69,7 +73,7 @@ describe('PostService', () => {
   })
 
   describe('create', () => {
-    const post: Post = generatePost()
+    const post: Post = generatePost({})
     it('should create and return a single Post', async () => {
       jest.spyOn(service, 'create').mockImplementation(async ({}) => post)
 
@@ -89,7 +93,7 @@ describe('PostService', () => {
   })
 
   describe('update', () => {
-    const post: Post = generatePost()
+    const post: Post = generatePost({})
     const updatedPost: Post = {
       ...post,
       title: faker.lorem.sentence(),
@@ -131,7 +135,7 @@ describe('PostService', () => {
   })
 
   describe('delete', () => {
-    const post: Post = generatePost()
+    const post: Post = generatePost({})
     it('should create and return a single Post', async () => {
       jest.spyOn(service, 'create').mockImplementation(async ({}) => post)
 
