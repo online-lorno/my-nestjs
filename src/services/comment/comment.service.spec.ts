@@ -102,33 +102,8 @@ describe('CommentService', () => {
 
   describe('update', () => {
     const comment: Comment = generateComment({})
-    const updatedComment: Comment = {
-      ...comment,
-      content: faker.lorem.paragraphs(),
-    }
-    it('should create and return a single Comment', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => comment)
-
-      expect(
-        await service.create({
-          content: comment.content,
-          post: {
-            connect: {
-              id: comment.postId as number,
-            },
-          },
-          author: {
-            connect: {
-              id: comment.authorId as number,
-            },
-          },
-        }),
-      ).toBe(comment)
-    })
     it('should update and return a single Comment using id', async () => {
-      jest
-        .spyOn(service, 'update')
-        .mockImplementation(async ({}) => updatedComment)
+      jest.spyOn(service, 'update').mockImplementation(async ({}) => comment)
 
       expect(
         await service.update({
@@ -136,34 +111,15 @@ describe('CommentService', () => {
             id: comment.id,
           },
           data: {
-            content: updatedComment.content,
+            content: comment.content,
           },
         }),
-      ).toBe(updatedComment)
+      ).toBe(comment)
     })
   })
 
   describe('delete', () => {
     const comment: Comment = generateComment({})
-    it('should create and return a single Comment', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => comment)
-
-      expect(
-        await service.create({
-          content: comment.content,
-          post: {
-            connect: {
-              id: comment.postId as number,
-            },
-          },
-          author: {
-            connect: {
-              id: comment.authorId as number,
-            },
-          },
-        }),
-      ).toBe(comment)
-    })
     it('should delete and return a single Comment using id', async () => {
       jest.spyOn(service, 'delete').mockImplementation(async ({}) => comment)
 

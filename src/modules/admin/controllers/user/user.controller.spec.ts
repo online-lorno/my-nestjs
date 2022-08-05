@@ -83,25 +83,9 @@ describe('UserController', () => {
 
   describe('PUT /admin/user/:id', () => {
     const user: User = generateUser()
-    const updatedUser: User = {
-      ...user,
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-    }
-    it('should create and return a single User', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => user)
-
-      expect(
-        await controller.create({
-          email: user.email,
-          name: user.name as string,
-        }),
-      ).toBe(user)
-    })
     it('should update and return a single User using id', async () => {
-      jest
-        .spyOn(service, 'update')
-        .mockImplementation(async ({}) => updatedUser)
+      jest.spyOn(service, 'findOne').mockImplementation(async ({}) => user)
+      jest.spyOn(service, 'update').mockImplementation(async ({}) => user)
 
       expect(
         await controller.update(
@@ -109,27 +93,39 @@ describe('UserController', () => {
             id: user.id,
           },
           {
-            email: updatedUser.email,
-            name: updatedUser.name as string,
+            email: user.email,
+            name: user.name as string,
           },
         ),
-      ).toBe(updatedUser)
+      ).toBe(user)
+    })
+    it('should return an error using a wrong id', async () => {
+      jest.spyOn(service, 'findOne').mockImplementation(async ({}) => null)
+
+      expect.assertions(2)
+      try {
+        await controller.update(
+          { id: faker.datatype.number() },
+          {
+            email: user.email,
+            name: user.name as string,
+          },
+        )
+      } catch (error) {
+        expect(error.status).toBe(404)
+        expect(error.response).toMatchObject({
+          statusCode: 404,
+          message: 'User not found',
+          error: 'Not Found',
+        })
+      }
     })
   })
 
   describe('DELETE /admin/user/:id', () => {
     const user: User = generateUser()
-    it('should create and return a single User', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => user)
-
-      expect(
-        await controller.create({
-          email: user.email,
-          name: user.name as string,
-        }),
-      ).toBe(user)
-    })
     it('should delete and return a single User using id', async () => {
+      jest.spyOn(service, 'findOne').mockImplementation(async ({}) => user)
       jest.spyOn(service, 'delete').mockImplementation(async ({}) => user)
 
       expect(
@@ -137,6 +133,21 @@ describe('UserController', () => {
           id: user.id,
         }),
       ).toBe(user)
+    })
+    it('should return an error using a wrong id', async () => {
+      jest.spyOn(service, 'findOne').mockImplementation(async ({}) => null)
+
+      expect.assertions(2)
+      try {
+        await controller.delete({ id: faker.datatype.number() })
+      } catch (error) {
+        expect(error.status).toBe(404)
+        expect(error.response).toMatchObject({
+          statusCode: 404,
+          message: 'User not found',
+          error: 'Not Found',
+        })
+      }
     })
   })
 })

@@ -82,25 +82,8 @@ describe('UserService', () => {
 
   describe('update', () => {
     const user: User = generateUser()
-    const updatedUser: User = {
-      ...user,
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-    }
-    it('should create and return a single User', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => user)
-
-      expect(
-        await service.create({
-          email: user.email,
-          name: user.name,
-        }),
-      ).toBe(user)
-    })
     it('should update and return a single User using id', async () => {
-      jest
-        .spyOn(service, 'update')
-        .mockImplementation(async ({}) => updatedUser)
+      jest.spyOn(service, 'update').mockImplementation(async ({}) => user)
 
       expect(
         await service.update({
@@ -108,26 +91,16 @@ describe('UserService', () => {
             id: user.id,
           },
           data: {
-            email: updatedUser.email,
-            name: updatedUser.name,
+            email: user.email,
+            name: user.name,
           },
         }),
-      ).toBe(updatedUser)
+      ).toBe(user)
     })
   })
 
   describe('delete', () => {
     const user: User = generateUser()
-    it('should create and return a single User', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => user)
-
-      expect(
-        await service.create({
-          email: user.email,
-          name: user.name,
-        }),
-      ).toBe(user)
-    })
     it('should delete and return a single User using id', async () => {
       jest.spyOn(service, 'delete').mockImplementation(async ({}) => user)
 

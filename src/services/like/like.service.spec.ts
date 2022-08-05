@@ -111,24 +111,6 @@ describe('LikeService', () => {
 
   describe('delete', () => {
     const like: Like = generateLike({})
-    it('should create and return a single Like', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => like)
-
-      expect(
-        await service.create({
-          post: {
-            connect: {
-              id: like.postId as number,
-            },
-          },
-          author: {
-            connect: {
-              id: like.authorId as number,
-            },
-          },
-        }),
-      ).toBe(like)
-    })
     it('should delete and return a single Like using id', async () => {
       jest.spyOn(service, 'delete').mockImplementation(async ({}) => like)
 

@@ -94,31 +94,8 @@ describe('PostService', () => {
 
   describe('update', () => {
     const post: Post = generatePost({})
-    const updatedPost: Post = {
-      ...post,
-      title: faker.lorem.sentence(),
-      content: faker.lorem.paragraphs(),
-    }
-    it('should create and return a single Post', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => post)
-
-      expect(
-        await service.create({
-          title: post.title,
-          content: post.content,
-          author: {
-            connect: {
-              id: post.authorId as number,
-            },
-          },
-          published: post.published,
-        }),
-      ).toBe(post)
-    })
     it('should update and return a single Post using id', async () => {
-      jest
-        .spyOn(service, 'update')
-        .mockImplementation(async ({}) => updatedPost)
+      jest.spyOn(service, 'update').mockImplementation(async ({}) => post)
 
       expect(
         await service.update({
@@ -126,32 +103,16 @@ describe('PostService', () => {
             id: post.id,
           },
           data: {
-            title: updatedPost.title,
-            content: updatedPost.content,
+            title: post.title,
+            content: post.content,
           },
         }),
-      ).toBe(updatedPost)
+      ).toBe(post)
     })
   })
 
   describe('delete', () => {
     const post: Post = generatePost({})
-    it('should create and return a single Post', async () => {
-      jest.spyOn(service, 'create').mockImplementation(async ({}) => post)
-
-      expect(
-        await service.create({
-          title: post.title,
-          content: post.content,
-          author: {
-            connect: {
-              id: post.authorId as number,
-            },
-          },
-          published: post.published,
-        }),
-      ).toBe(post)
-    })
     it('should delete and return a single Post using id', async () => {
       jest.spyOn(service, 'delete').mockImplementation(async ({}) => post)
 

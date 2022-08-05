@@ -57,20 +57,34 @@ export class UserController {
     @Param() params: UserParamsDto,
     @Body() body: UserUpdateDto,
   ): Promise<User> {
-    const user = await this.userService.update({
+    const user = await this.userService.findOne({
+      id: +params.id,
+    })
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
+
+    const updatedUser = await this.userService.update({
       where: {
         id: +params.id,
       },
       data: body,
     })
-    return user
+    return updatedUser
   }
 
   @Delete(':id')
   async delete(@Param() params: UserDeleteDto): Promise<User> {
-    const user = await this.userService.delete({
+    const user = await this.userService.findOne({
       id: +params.id,
     })
-    return user
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
+
+    const deletedUser = await this.userService.delete({
+      id: +params.id,
+    })
+    return deletedUser
   }
 }
