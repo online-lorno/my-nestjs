@@ -3,11 +3,11 @@ import { faker } from '@faker-js/faker'
 import { times } from 'ramda'
 
 import { Comment, Like, Post, User, PrismaClient } from '@prisma/client'
-import { LikeService } from './like.service'
-import { generateComment } from '../comment/comment.service.spec'
-import { generatePost } from '../post/post.service.spec'
-import { generateUser } from '../user/user.service.spec'
-import { PrismaModule } from '../../modules/prisma.module'
+import { PrismaModule } from '~/modules/prisma.module'
+import { LikeService } from '~/services/like/like.service'
+import { generateComment } from '~/services/comment/comment.service.spec'
+import { generatePost } from '~/services/post/post.service.spec'
+import { generateUser } from '~/services/user/user.service.spec'
 
 export interface GenerateLikeProps {
   user?: User

@@ -3,9 +3,9 @@ import { faker } from '@faker-js/faker'
 import { times } from 'ramda'
 
 import { Post, User, PrismaClient } from '@prisma/client'
-import { PostService } from './post.service'
-import { generateUser } from '../user/user.service.spec'
-import { PrismaModule } from '../../modules/prisma.module'
+import { PrismaModule } from '~/modules/prisma.module'
+import { PostService } from '~/services/post/post.service'
+import { generateUser } from '~/services/user/user.service.spec'
 
 export interface GeneratePostProps {
   user?: User

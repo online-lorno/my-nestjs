@@ -3,8 +3,8 @@ import { faker } from '@faker-js/faker'
 import { times } from 'ramda'
 
 import { User, PrismaClient } from '@prisma/client'
-import { UserService } from './user.service'
-import { PrismaModule } from '../../modules/prisma.module'
+import { PrismaModule } from '~/modules/prisma.module'
+import { UserService } from '~/services/user/user.service'
 
 export const generateUser = (): User => {
   const userFirstName = faker.name.firstName()

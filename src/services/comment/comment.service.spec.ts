@@ -3,10 +3,10 @@ import { faker } from '@faker-js/faker'
 import { times } from 'ramda'
 
 import { Comment, Post, User, PrismaClient } from '@prisma/client'
-import { CommentService } from './comment.service'
-import { generatePost } from '../post/post.service.spec'
-import { generateUser } from '../user/user.service.spec'
-import { PrismaModule } from '../../modules/prisma.module'
+import { PrismaModule } from '~/modules/prisma.module'
+import { CommentService } from '~/services/comment/comment.service'
+import { generatePost } from '~/services/post/post.service.spec'
+import { generateUser } from '~/services/user/user.service.spec'
 
 export interface GenerateCommentProps {
   user?: User
